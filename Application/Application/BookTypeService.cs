@@ -11,8 +11,17 @@ namespace SimpleLibrary.Application
         {
             _bookTypeRepository = bookTypeRepository;
         }
-        public async Task<SearchByBookTypeResultDto> GetBookTypeWithBooks(string type,int currentPage){
+        public async Task<SearchByBookTypeResultDto> GetBooksByBookType(string type,int currentPage){
             return await _bookTypeRepository.getBookTypeWithBooks(type,currentPage);
+        }
+
+        public async Task<bool> CreateBookType(BookTypeModelDto model)
+        {
+            return await _bookTypeRepository.CreateBookType(model);
+        }
+        public async Task<bool?> DeleteBookType(string type)
+        {
+            return await _bookTypeRepository.DeleteBookType(type);
         }
     }
 }

@@ -26,6 +26,31 @@ namespace SimpleLibrary.Persistence.Repository
             };
         }
         
+        public async Task<bool?> DeleteBookType(string type)
+        {
+            var dbSetBookType = Set<BookType>();
+            
+            var bookType=await dbSetBookType.AsNoTracking().FirstOrDefaultAsync(q => q.Type.Equals(type));
+            if (bookType is null)
+                return null;
+
+            var dbSetBook = Set<Book>();
+            var books = dbSetBook.AsNoTracking().Where(q => q.BookTypeId == bookType.Id);
+            dbSetBook.RemoveRange(books);
+            
+            var removeTypeResult =dbSetBookType.Remove(bookType);
+            if (removeTypeResult is null)
+                return false;
+            return SaveChanges() is 1;
+        }
+        
+        public async Task<bool> CreateBookType(BookTypeModelDto model)
+        {
+            var bookType = new BookType();
+            bookType.Type = model.Type;
+            await Set<BookType>().AddAsync(bookType);
+            return SaveChanges() is 1;
+        }
         public async Task<SearchByBookTypeResultDto> getBookTypeWithBooks(string type,int currentPage)
         {
             var cacheKey = $"search-books-by-booktype-{type}-{currentPage}";
@@ -35,8 +60,8 @@ namespace SimpleLibrary.Persistence.Repository
             if (bookType is null)
                 return null;
             
-            var bookList = mapper.ProjectTo<BookInfoDto>(Set<Book>().AsNoTracking().Where(q => q.BookTypeId == bookType.Id)
-                .OrderByDescending(q => q.Id).Skip((currentPage - 1) * 100).Take(100)).ToList();
+            var bookList =await  mapper.ProjectTo<BookInfoDto>(Set<Book>().AsNoTracking().Where(q => q.BookTypeId == bookType.Id)
+                .OrderByDescending(q => q.Id).Skip((currentPage - 1) * 100).Take(100)).ToListAsync();
             result = new SearchByBookTypeResultDto() {totalCount = bookList.Count, bookInfoList = bookList};
             
             _cache.Set(cacheKey, result, _cacheExpirationOptions);
