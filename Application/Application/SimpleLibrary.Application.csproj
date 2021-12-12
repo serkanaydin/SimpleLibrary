@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\SimpleLibrary.Domain\SimpleLibrary.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\SimpleLibrary.Infrastructure.Persistence\SimpleLibrary.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

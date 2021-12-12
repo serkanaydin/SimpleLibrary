@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿#nullable enable
 namespace SimpleLibrary.Domain.Book
 {
-    public class Book 
+    public record Book : IDentifiable<int>
     {
-        public Guid Id { get; set; }
-
+        public int Id { get; set; }
         public string Name { get; set; }
-        
-        public string Author { get; set; }
         public decimal Price { get; set; }
-
+        public int AuthorId { get; set; }
+        public Author? Author { get; set; }
+        public int BookTypeId { get; set; }
+        public BookType? BookType { get; set; }
     }
 }

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLibrary.MVC", "Presen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLibrary.WebAPI", "Presentation\SimpleLibrary.WebAPI\SimpleLibrary.WebAPI.csproj", "{1A4689AE-84C3-4E8B-A1CC-9CBF941C07AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLibrary.Core", "Infrastructure\SimpleLibrary.Core\SimpleLibrary.Core.csproj", "{EE5F360A-DA45-452F-AB15-B58248AB6F8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{1A4689AE-84C3-4E8B-A1CC-9CBF941C07AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A4689AE-84C3-4E8B-A1CC-9CBF941C07AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A4689AE-84C3-4E8B-A1CC-9CBF941C07AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE5F360A-DA45-452F-AB15-B58248AB6F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE5F360A-DA45-452F-AB15-B58248AB6F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE5F360A-DA45-452F-AB15-B58248AB6F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE5F360A-DA45-452F-AB15-B58248AB6F8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{D6C52F91-531A-4B4D-887C-BDBA9F13D99E} = {150AEBC9-C66C-4DA1-B727-4F06C2A0C7D5}
 		{A5F4DB81-D8EE-452B-9110-5B57D067A33F} = {E4E7F517-F883-4199-81C9-9A53259436F2}
 		{1A4689AE-84C3-4E8B-A1CC-9CBF941C07AE} = {E4E7F517-F883-4199-81C9-9A53259436F2}
+		{EE5F360A-DA45-452F-AB15-B58248AB6F8B} = {150AEBC9-C66C-4DA1-B727-4F06C2A0C7D5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8920EDD-6782-4522-8914-2D4F34AB5DC7}
