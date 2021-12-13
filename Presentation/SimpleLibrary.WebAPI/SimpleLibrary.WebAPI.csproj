@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Application\Application\SimpleLibrary.Application.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\SimpleLibrary.Infrastructure.Persistence\SimpleLibrary.Persistence.csproj" />
+    <ProjectReference Include="..\..\Application\SimpleLibrary.Application\SimpleLibrary.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\SimpleLibrary.Persistence\SimpleLibrary.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
