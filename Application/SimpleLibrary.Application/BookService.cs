@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
-using SimpleLibrary.Domain.Book;
+using SimpleLibrary.Domain;
 using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application

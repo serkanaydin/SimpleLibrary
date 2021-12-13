@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SimpleLibrary.Core.Dtos;
-using SimpleLibrary.Domain.Book;
+using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.DtoMappings
 {

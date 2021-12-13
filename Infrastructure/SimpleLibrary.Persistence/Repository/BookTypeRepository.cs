@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleLibrary.Core.Dtos;
 using SimpleLibrary.Domain;
-using SimpleLibrary.Domain.Book;
 
 namespace SimpleLibrary.Persistence.Repository
 {
@@ -51,12 +50,12 @@ namespace SimpleLibrary.Persistence.Repository
             await Set<BookType>().AddAsync(bookType);
             return SaveChanges() is 1;
         }
-        public async Task<SearchByBookTypeResultDto> getBookTypeWithBooks(string type,int currentPage)
+        public async Task<SearchByBookTypeResultDto> GetBookTypeWithBooks(string type,int currentPage)
         {
             var cacheKey = $"search-books-by-booktype-{type}-{currentPage}";
             if (_cache.TryGetValue(cacheKey, out SearchByBookTypeResultDto result)) return result;
             
-            var bookType = Set<BookType>().AsNoTracking().FirstOrDefault(q => q.Type.Contains(type));
+            var bookType =await Set<BookType>().AsNoTracking().FirstOrDefaultAsync(q => q.Type.Contains(type));
             if (bookType is null)
                 return null;
             

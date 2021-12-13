@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace SimpleLibrary.Domain.Book
+namespace SimpleLibrary.Domain
 {
     public record Book : IDentifiable<int>
     {

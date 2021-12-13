@@ -6,13 +6,13 @@ namespace SimpleLibrary.Application
 {
     public class BookTypeService
     {
-        private BookTypeRepository _bookTypeRepository;
+        private readonly BookTypeRepository _bookTypeRepository;
         public BookTypeService(BookTypeRepository bookTypeRepository)
         {
             _bookTypeRepository = bookTypeRepository;
         }
         public async Task<SearchByBookTypeResultDto> GetBooksByBookType(string type,int currentPage){
-            return await _bookTypeRepository.getBookTypeWithBooks(type,currentPage);
+            return await _bookTypeRepository.GetBookTypeWithBooks(type,currentPage);
         }
 
         public async Task<bool> CreateBookType(BookTypeModelDto model)

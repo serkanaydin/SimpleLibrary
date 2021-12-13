@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SimpleLibrary.Core;
-using SimpleLibrary.Domain.Book;
+using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.Repository
 {

@@ -7,7 +7,7 @@ namespace SimpleLibrary.Domain
     {
         public int Id { get; set; }
         public string Type { get; set; }
-        public ICollection<Book.Book>? Books { get; set; }
+        public ICollection<Book>? Books { get; set; }
 
     }
 }

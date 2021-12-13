@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SimpleLibrary.Application;
-using SimpleLibrary.Domain.Book;
+using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.WebAPI.Controllers
 {
