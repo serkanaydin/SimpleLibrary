@@ -9,6 +9,7 @@ namespace SimpleLibrary.Persistence
         {
             services.AddTransient<BookService>();
             services.AddTransient<BookTypeService>();
+            services.AddTransient<AccountService>();
 
             return services;
         } 

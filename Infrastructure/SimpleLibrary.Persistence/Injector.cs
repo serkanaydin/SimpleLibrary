@@ -11,6 +11,7 @@ namespace SimpleLibrary.Persistence
         {
             services.AddTransient<BookRepository>();
             services.AddTransient<BookTypeRepository>();
+            services.AddTransient<AccountRepository>();
 
             return services;
         }
