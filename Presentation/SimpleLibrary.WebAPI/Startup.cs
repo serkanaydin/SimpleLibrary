@@ -32,7 +32,6 @@ namespace SimpleLibrary.WebAPI
         {
 
             services.AddControllers();
-            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SimpleLibrary.WebAPI", Version = "v1" });
@@ -84,7 +83,9 @@ namespace SimpleLibrary.WebAPI
                 options.RequireHttpsMetadata = false;  
                 options.TokenValidationParameters = new TokenValidationParameters()  
                 {  
-                    ValidateIssuer = false,  
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidateIssuer = false,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
                 };  
@@ -105,8 +106,6 @@ namespace SimpleLibrary.WebAPI
 
                 });
             }
-            app.UseCors("https://localhost:5001");
-
             app.UseHttpsRedirection();
 
             app.UseRouting();

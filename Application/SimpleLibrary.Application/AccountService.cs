@@ -14,12 +14,12 @@ namespace SimpleLibrary.Application
             _accountRepository = accountRepository;
         }
 
-        public async Task<string?> RegisterUser(RegisterDto model)
+        public async Task<bool?> RegisterUser(RegisterDto model)
         {
            return await _accountRepository.RegisterUser(model);
         }
 
-        public async Task<string?> Login(LoginDto login)
+        public async Task<LoginResponseDto?> Login(LoginDto login)
         {
             return await _accountRepository.Login(login);
         }

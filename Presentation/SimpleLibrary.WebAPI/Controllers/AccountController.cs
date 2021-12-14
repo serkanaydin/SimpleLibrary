@@ -25,7 +25,7 @@ namespace SimpleLibrary.WebAPI.Controllers
             var result = await _accountService.RegisterUser(model);
             if (result is null)
                 return this.Ok(new {message = "User couldnt be registered"});
-            return this.Ok(result);
+            return this.Ok(new{Message="Registration successful"});
         }
         [HttpPost]  
         [Route("login")]  

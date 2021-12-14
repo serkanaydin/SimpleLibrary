@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SimpleLibrary.Core.Dtos.Authentication;
+using SimpleLibrary.Core.Helper.Authentication;
 using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.Repository
@@ -17,31 +18,15 @@ namespace SimpleLibrary.Persistence.Repository
     public class AccountRepository : BaseRepository
     {
         private UserManager<User> _userManager;
-        private IConfiguration _configuration;
         private readonly SignInManager<User> _signInManager;
-
+        private readonly IConfiguration _configuration;
         public AccountRepository(SignInManager<User> signInManager,UserManager<User> userManager, DbContext context,IConfiguration configuration) : base(context)
         {
-            _userManager = userManager;
             _configuration = configuration;
+            _userManager = userManager;
             _signInManager = signInManager;
         }
-
-        private string generateJwtToken(User user)
-        {
-            // generate token that is valid for 7 days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-        public async Task<string?> RegisterUser(RegisterDto model)
+        public async Task<bool?> RegisterUser(RegisterDto model)
             {
                 var userExists = await _userManager.FindByNameAsync(model.Username);
                 if (userExists != null)
@@ -56,17 +41,19 @@ namespace SimpleLibrary.Persistence.Repository
                 if (!result.Succeeded)
                     return null;
 
-                return generateJwtToken(user);
+                return true;
             }  
-        public async Task<string?> Login(LoginDto login)
+        public async Task<LoginResponseDto?> Login(LoginDto login)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(q => q.UserName == login.Username);
             if (user is null)
                 return null;
+            
             var result =await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
             if (result.Succeeded is false)
                 return null;
-            return generateJwtToken(user);;
+            
+            return JwtHelper.generateJwtToken(user,_configuration);;
         } 
     }
 }
