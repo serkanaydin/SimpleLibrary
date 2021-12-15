@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Collections.Generic;
 
 namespace SimpleLibrary.Domain
@@ -8,6 +9,10 @@ namespace SimpleLibrary.Domain
         public int Id { get; set; }
         public string Type { get; set; }
         public ICollection<Book>? Books { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 }

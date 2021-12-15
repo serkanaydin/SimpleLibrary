@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.OpenApi.Extensions;
 using SimpleLibrary.Application;
+using SimpleLibrary.Core.Dtos;
 using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.WebAPI.Controllers
@@ -20,16 +23,20 @@ namespace SimpleLibrary.WebAPI.Controllers
         {
             this.bookService = bookService;
         }
-        [HttpGet]
-        public Book? GetBook([FromQuery] string name)
+        [HttpGet("get-book-by-name")]
+        public async Task<IActionResult> GetBook([FromQuery] string name)
         {
-            return  bookService.GetBook(name);
+            var result = await bookService.GetBook(name);
+            if (result is null)
+                return this.Ok(new { message = $"There is no book as named '{name}'"});
+            return this.Ok(result);
         }
 
-        [HttpPost]
-        public int AddBook([FromBody] Book book)
+        [HttpPost("add-book")]
+        public async Task<IActionResult> AddBook([FromBody] CreateBookDto model)
         {
-            return bookService.AddBook(book);
+            var result = await bookService.AddBook(model);
+            return this.Ok(result.GetDisplayName());
         }
 
         [HttpGet("all-books-by-names")]

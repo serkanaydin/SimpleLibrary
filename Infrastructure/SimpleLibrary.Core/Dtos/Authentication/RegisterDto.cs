@@ -2,7 +2,7 @@
 
 namespace SimpleLibrary.Core.Dtos.Authentication
 {
-    public class RegisterDto
+    public record RegisterDto
     {
         public string Username { get; set; }  
   

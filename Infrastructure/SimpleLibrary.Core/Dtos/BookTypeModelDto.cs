@@ -1,6 +1,6 @@
 ﻿namespace SimpleLibrary.Core.Dtos
 {
-    public class BookTypeModelDto
+    public record BookTypeModelDto
     {
         public string Type { get; set; }
     }

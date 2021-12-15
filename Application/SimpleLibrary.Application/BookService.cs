@@ -1,6 +1,9 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using SimpleLibrary.Core.Dtos;
+using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Domain;
 using SimpleLibrary.Persistence.Repository;
 
@@ -14,9 +17,9 @@ namespace SimpleLibrary.Application
             _bookRepository = bookRepository;
         }
 
-        public Book? GetBook(string name)
+        public async Task<BookInfoDto?> GetBook(string name)
         {
-            return _bookRepository.getBook(name);
+            return await _bookRepository.GetBook(name);
         }
 
         public IObservable<IList<Book>> GetBooksByNamesAsync(string names)
@@ -24,9 +27,9 @@ namespace SimpleLibrary.Application
             return _bookRepository.GetBooksByNamesAsync(names);
         }
 
-        public int AddBook(Book book)
+        public async Task<BookCreationResult> AddBook(CreateBookDto model)
         {
-            return _bookRepository.AddBook(book);
+            return await _bookRepository.AddBook(model);
         }
     }
 }

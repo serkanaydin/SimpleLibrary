@@ -1,6 +1,6 @@
 ﻿namespace SimpleLibrary.Core.Dtos
 {
-    public class BookInfoDto
+    public record BookInfoDto
     { 
         public string BookName { get; set; }
         public string AuthorName { get; set; }

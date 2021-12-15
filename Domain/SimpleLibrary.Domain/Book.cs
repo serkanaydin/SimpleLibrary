@@ -1,4 +1,6 @@
-﻿#nullable enable
+﻿using System;
+
+#nullable enable
 namespace SimpleLibrary.Domain
 {
     public record Book : IDentifiable<int>
@@ -10,5 +12,9 @@ namespace SimpleLibrary.Domain
         public Author? Author { get; set; }
         public int BookTypeId { get; set; }
         public BookType? BookType { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
