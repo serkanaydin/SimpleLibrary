@@ -11,7 +11,7 @@ namespace SimpleLibrary.Persistence.Mappings
         public void Configure(EntityTypeBuilder<BookType> builder)
         {
             builder.ToTable("BookType");
-            builder.Property(e => e.Id).HasColumnType("int(11)");
+            builder.Property(e => e.Id).HasColumnType("bigint");
             builder.Property(e => e.Type).HasColumnType("varchar(100)");
             
             builder.HasMany(t => t.Books)

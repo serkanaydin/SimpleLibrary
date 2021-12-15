@@ -21,18 +21,13 @@ namespace SimpleLibrary.Persistence
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL(configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             optionsBuilder.UseLoggerFactory(loggerFactory);
             base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BookType>()
-                .HasMany(bt=>bt.Books)
-                .WithOne(b=>b.BookType)
-                .HasForeignKey(b=>b.BookTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }
