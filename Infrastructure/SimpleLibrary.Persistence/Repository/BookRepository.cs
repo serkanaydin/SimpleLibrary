@@ -22,6 +22,7 @@ namespace SimpleLibrary.Persistence.Repository
 
         private IList<Book> GetBooksByNames(string names)
         {
+            var filter = names.Split(",").ToList();
             return Set<Book>().FromSqlRaw("call sp_getBooksByNames({0})",names).ToList();
         }
 

@@ -6,7 +6,7 @@ using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
 {
-    public class AccountService
+    public class AccountService  
     {
         private AccountRepository _accountRepository;
         public AccountService(AccountRepository accountRepository)
