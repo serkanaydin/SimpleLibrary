@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SimpleLibrary.Core.Dtos.Authentication;
+using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Core.Helper.Authentication;
 using SimpleLibrary.Domain;
 
@@ -39,7 +40,9 @@ namespace SimpleLibrary.Persistence.Repository
                 {  
                     Email = model.Email,  
                     SecurityStamp = Guid.NewGuid().ToString(),  
-                    UserName = model.Username  
+                    UserName = model.Username,
+                    IsActive = true,
+                    IsDeleted = false
                 };  
                 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -47,19 +50,46 @@ namespace SimpleLibrary.Persistence.Repository
                     return null;
 
                 return true;
-            }  
+            }
+
+        public async Task<UserEnums> DeactivateUser(int userId)
+        {
+            var userSet = Set<User>();
+            var user = await  userSet.FirstOrDefaultAsync(q => q.Id == userId && q.IsActive);
+            if (user is null)
+                return UserEnums.ActiveUserDoesntExistWithUserId;
+
+            user.IsActive = false;
+            user.IsDeleted = true;
+            user.UpdateDate=DateTime.Now;
+
+            userSet.Update(user);
+            var result = await SaveChangesAsync();
+            if (result is 0)
+                return UserEnums.SaveChangesFault;
+
+            return UserEnums.DeactivateSuccessful;
+        }
         
-        public async Task<LoginResponseDto?> Login(LoginDto login)
+        public async Task<LoginResponseDto> Login(LoginDto login)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(q => q.UserName == login.Username);
             if (user is null)
-                return null;
+                return new LoginResponseDto(){result = UserEnums.NoUserWithTheUsername};
             
-            var result =await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
-            if (result.Succeeded is false)
-                return null;
+            var result =await _signInManager.CheckPasswordSignInAsync(user, login.Password, true);
             
-            return JwtHelper.generateJwtToken(user,_configuration);;
+            switch (result.Succeeded)
+            {
+                case true:
+                    return JwtHelper.generateJwtToken(user,_configuration);; ;
+                case false when result.IsLockedOut:
+                    return new LoginResponseDto() { result = UserEnums.LockedOut };
+                case false when result.IsNotAllowed:
+                    return new LoginResponseDto() { result = UserEnums.NotAllowed };
+                default:
+                    return new LoginResponseDto() { result = UserEnums.WrongPassword };
+            }
         } 
     }
 }

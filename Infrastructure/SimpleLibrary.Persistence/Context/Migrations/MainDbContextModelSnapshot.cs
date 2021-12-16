@@ -60,12 +60,6 @@ namespace SimpleLibrary.Persistence.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
@@ -93,12 +87,6 @@ namespace SimpleLibrary.Persistence.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Type")
                         .IsRequired()

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SimpleLibrary.Persistence.Repository
 {
@@ -18,9 +19,9 @@ namespace SimpleLibrary.Persistence.Repository
             return Context.Set<T>();
         }
 
-        protected int SaveChanges()
+        protected async Task<int> SaveChangesAsync()
         {
-            return Context.SaveChanges();
+            return await Context.SaveChangesAsync();
         }
     }
 }

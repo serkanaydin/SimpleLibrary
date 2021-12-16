@@ -39,7 +39,7 @@ namespace SimpleLibrary.Persistence.Repository
             
             var removeTypeResult =dbSetBookType.Remove(bookType);
             
-            return SaveChanges() is 1;
+            return await SaveChangesAsync() is 1;
         }
         
         public async Task<bool> CreateBookType(BookTypeModelDto model)
@@ -47,7 +47,7 @@ namespace SimpleLibrary.Persistence.Repository
             var bookType = new BookType();
             bookType.Type = model.Type;
             await Set<BookType>().AddAsync(bookType);
-            return SaveChanges() is 1;
+            return await SaveChangesAsync() is 1;
         }
         public async Task<SearchByBookTypeResultDto> GetBookTypeWithBooks(string type,int currentPage)
         {

@@ -59,8 +59,6 @@ namespace SimpleLibrary.Persistence.Repository
                 Price = model.Price,
                 AuthorId = model.AuthorId,
                 BookTypeId = model.BookTypeId,
-                IsActive = true,
-                IsDeleted = false,
                 CreationDate=DateTime.Now,
             };
 

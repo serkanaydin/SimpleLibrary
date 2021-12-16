@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SimpleLibrary.Core.Dtos.Authentication;
+using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Core.Helper.Authentication
@@ -24,7 +25,7 @@ namespace SimpleLibrary.Core.Helper.Authentication
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return new LoginResponseDto()
-                { ExpiresAt = tokenDescriptor.Expires, JwtToken = tokenHandler.WriteToken(token) };
+                { result = UserEnums.SuccessfulLogin,ExpiresAt = tokenDescriptor.Expires, JwtToken = tokenHandler.WriteToken(token) };
         }
     }
 }

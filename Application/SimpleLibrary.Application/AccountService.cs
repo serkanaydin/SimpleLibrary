@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SimpleLibrary.Core.Dtos.Authentication;
+using SimpleLibrary.Core.Enum;
+using SimpleLibrary.Domain;
 using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
@@ -19,9 +21,13 @@ namespace SimpleLibrary.Application
            return await _accountRepository.RegisterUser(model);
         }
 
-        public async Task<LoginResponseDto?> Login(LoginDto login)
+        public async Task<LoginResponseDto> Login(LoginDto login)
         {
             return await _accountRepository.Login(login);
+        }
+        public async Task<UserEnums> DeactivateUser(int userId)
+        {
+            return await _accountRepository.DeactivateUser(userId);
         }
     }
 }

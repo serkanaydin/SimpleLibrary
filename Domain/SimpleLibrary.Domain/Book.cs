@@ -14,7 +14,5 @@ namespace SimpleLibrary.Domain
         public BookType? BookType { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? UpdateDate { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }
