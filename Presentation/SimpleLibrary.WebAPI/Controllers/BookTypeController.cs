@@ -1,12 +1,16 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using SimpleLibrary.Application;
 using SimpleLibrary.Core.Dtos;
+using SimpleLibrary.WebAPI.Middleware;
 
 namespace SimpleLibrary.WebAPI.Controllers
 {
+    [ServiceFilter(typeof(RequiredAttributeMiddleware))]
     [Route("api/[controller]")]
     [ApiController]
     public class BookTypeController : ControllerBase
@@ -37,7 +41,6 @@ namespace SimpleLibrary.WebAPI.Controllers
                     });
             return this.Ok(new{isSuccess=true});
         }
-        
         [HttpGet("get-books")]
         public async Task<IActionResult> GetBooks([FromQuery,Required] string type,[FromQuery,Required]int currentPage)
         {
