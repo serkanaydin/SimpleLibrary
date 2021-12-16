@@ -38,8 +38,7 @@ namespace SimpleLibrary.Persistence.Repository
             dbSetBook.RemoveRange(books);
             
             var removeTypeResult =dbSetBookType.Remove(bookType);
-            if (removeTypeResult is null)
-                return false;
+            
             return SaveChanges() is 1;
         }
         

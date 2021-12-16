@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -19,13 +20,18 @@ namespace SimpleLibrary.WebAPI.Controllers
     public class BookController : ControllerBase
     {
         public BookService bookService;
+        
         public BookController(BookService bookService)
         {
             this.bookService = bookService;
         }
+        
         [HttpGet("get-book-by-name")]
-        public async Task<IActionResult> GetBook([FromQuery] string name)
+        public async Task<IActionResult> GetBook([FromQuery,Required] string name)
         {
+            if (ModelState.IsValid is false)
+                return BadRequest();
+            
             var result = await bookService.GetBook(name);
             if (result is null)
                 return this.Ok(new { message = $"There is no book as named '{name}'"});
@@ -33,15 +39,20 @@ namespace SimpleLibrary.WebAPI.Controllers
         }
 
         [HttpPost("add-book")]
-        public async Task<IActionResult> AddBook([FromBody] CreateBookDto model)
+        public async Task<IActionResult> AddBook([FromBody,Required] CreateBookDto model)
         {
+            if (ModelState.IsValid is false)
+                return BadRequest();
+            
             var result = await bookService.AddBook(model);
             return this.Ok(result.GetDisplayName());
         }
 
         [HttpGet("all-books-by-names")]
-        public async Task<IActionResult> GetBooksByNames([FromQuery] string names)
+        public async Task<IActionResult> GetBooksByNames([FromQuery,Required] string names)
         {
+            if (ModelState.IsValid is false)
+                return BadRequest();
             
             var result = await bookService.GetBooksByNamesAsync(names);
             return Ok(result);

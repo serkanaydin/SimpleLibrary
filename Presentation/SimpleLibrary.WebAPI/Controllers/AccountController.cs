@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -14,22 +15,25 @@ namespace SimpleLibrary.WebAPI.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AccountService _accountService;
+        
         public AccountController(AccountService accountService)
         {
             _accountService = accountService;
         }
+        
         [HttpPost]  
         [Route("register")]  
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
+        public async Task<IActionResult> Register([FromBody,Required] RegisterDto model)
         {
             var result = await _accountService.RegisterUser(model);
             if (result is null)
                 return this.Ok(new {message = "User couldnt be registered"});
             return this.Ok(new{Message="Registration successful"});
         }
+        
         [HttpPost]  
         [Route("login")]  
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
+        public async Task<IActionResult> Login([FromBody,Required] LoginDto model)
         {
             var result = await _accountService.Login(model);
             if (result is null)
