@@ -20,9 +20,6 @@ namespace SimpleLibrary.WebAPI.Controllers
         [HttpPost("add-booktype")]
         public async Task<IActionResult> CreateBookType([FromBody,Required]BookTypeModelDto model)
         {
-            if (ModelState.IsValid is false)
-                return BadRequest();
-            
             var result = await _bookTypeService.CreateBookType(model);
             return this.Ok(result);
         }
@@ -30,9 +27,6 @@ namespace SimpleLibrary.WebAPI.Controllers
         [HttpDelete("delete-booktype")]
         public async Task<IActionResult> DeleteBookType([FromQuery,Required]string type)
         {
-            if (ModelState.IsValid is false)
-                return BadRequest();
-            
             var result = await _bookTypeService.DeleteBookType(type);
             if (result is null)
                 return this.Ok(
@@ -47,9 +41,6 @@ namespace SimpleLibrary.WebAPI.Controllers
         [HttpGet("get-books")]
         public async Task<IActionResult> GetBooks([FromQuery,Required] string type,[FromQuery,Required]int currentPage)
         {
-            if (ModelState.IsValid is false)
-                return BadRequest();
-            
             var result =await _bookTypeService.GetBooksByBookType(type, currentPage);
             if (result is null)
             {

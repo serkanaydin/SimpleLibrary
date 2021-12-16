@@ -29,9 +29,6 @@ namespace SimpleLibrary.WebAPI.Controllers
         [HttpGet("get-book-by-name")]
         public async Task<IActionResult> GetBook([FromQuery,Required] string name)
         {
-            if (ModelState.IsValid is false)
-                return BadRequest();
-            
             var result = await bookService.GetBook(name);
             if (result is null)
                 return this.Ok(new { message = $"There is no book as named '{name}'"});
@@ -41,9 +38,6 @@ namespace SimpleLibrary.WebAPI.Controllers
         [HttpPost("add-book")]
         public async Task<IActionResult> AddBook([FromBody,Required] CreateBookDto model)
         {
-            if (ModelState.IsValid is false)
-                return BadRequest();
-            
             var result = await bookService.AddBook(model);
             return this.Ok(result.GetDisplayName());
         }
@@ -51,9 +45,6 @@ namespace SimpleLibrary.WebAPI.Controllers
         [HttpGet("all-books-by-names")]
         public async Task<IActionResult> GetBooksByNames([FromQuery,Required] string names)
         {
-            if (ModelState.IsValid is false)
-                return BadRequest();
-            
             var result = await bookService.GetBooksByNamesAsync(names);
             return Ok(result);
         }
