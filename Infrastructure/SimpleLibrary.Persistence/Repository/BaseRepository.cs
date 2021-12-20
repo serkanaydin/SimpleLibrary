@@ -5,14 +5,14 @@ namespace SimpleLibrary.Persistence.Repository
 {
     public abstract class BaseRepository
     {
-        public BaseRepository(DbContext context)
+        protected BaseRepository(DbContext context)
         {
             Context = context;
             Context.ChangeTracker.AutoDetectChangesEnabled = false;
             Context.ChangeTracker.LazyLoadingEnabled = false;
         }
 
-        protected DbContext Context { get; }
+        private DbContext Context { get; }
 
         protected DbSet<T> Set<T>() where T : class
         {

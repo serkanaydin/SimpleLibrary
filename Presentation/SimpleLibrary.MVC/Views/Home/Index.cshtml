@@ -1,8 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model SimpleLibrary.Core.Dtos.SearchByBookTypeResultDto
+@{ ViewData["Title"] = "Book list";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Book name</th>
+        <th scope="col">Book author</th>
+        <th scope="col">Book type</th>
+        <th scope="col">Book price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var book in Model.BookInfoList)
+    {
+        <tr>
+            <td width="25%">@book.BookName</td>
+            <td width="25%">@book.AuthorName</td>
+            <td width="25%">@book.BookType</td>
+            <td width="25%">@book.Price</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<nav aria-label="Page navigation example">
+    <ul class="float-none justify-content-center pagination">
+        @if (Model.CurrentPage>1)
+        {
+            <li class="page-item"><a class="page-link" href="/Home/Index/@Model.Type/@(Model.CurrentPage - 1)">Previous</a></li>
+        }
+        <li class="page-item"><a class="page-link" href="/Home/Index/@Model.Type/@(Model.CurrentPage + 1)">Next</a></li>
+    </ul>
+</nav>

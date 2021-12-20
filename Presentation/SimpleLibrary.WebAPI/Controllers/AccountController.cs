@@ -37,7 +37,7 @@ namespace SimpleLibrary.WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody,Required] LoginDto model)
         {
             var result = await _accountService.Login(model);
-            return this.Ok(result.result.GetDisplayName());
+            return this.Ok(result);
         }
         
         [HttpPost]  

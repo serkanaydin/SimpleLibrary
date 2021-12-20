@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SimpleLibrary.Core.Dtos;
+using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
@@ -15,13 +16,13 @@ namespace SimpleLibrary.Application
             return await _bookTypeRepository.GetBookTypeWithBooks(type,currentPage);
         }
 
-        public async Task<bool> CreateBookType(BookTypeModelDto model)
+        public async Task<BookTypeEnums> CreateBookType(BookTypeModelDto model)
         {
             return await _bookTypeRepository.CreateBookType(model);
         }
-        public async Task<bool?> DeleteBookType(string type)
+        public async Task<BookTypeEnums> DeleteBookType(int typeId)
         {
-            return await _bookTypeRepository.DeleteBookType(type);
+            return await _bookTypeRepository.DeleteBookType(typeId);
         }
     }
 }

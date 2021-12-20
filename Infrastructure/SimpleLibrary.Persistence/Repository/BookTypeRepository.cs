@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleLibrary.Core.Dtos;
+using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.Repository
@@ -25,29 +26,46 @@ namespace SimpleLibrary.Persistence.Repository
             };
         }
         
-        public async Task<bool?> DeleteBookType(string type)
+        public async Task<BookTypeEnums> DeleteBookType(int typeId)
         {
             var dbSetBookType = Set<BookType>();
             
-            var bookType=await dbSetBookType.AsNoTracking().FirstOrDefaultAsync(q => q.Type.Equals(type));
+            var bookType=await dbSetBookType.AsNoTracking().FirstOrDefaultAsync(q => q.Id==typeId);
             if (bookType is null)
-                return null;
+                return BookTypeEnums.BookTypeDoesntExists;
 
             var dbSetBook = Set<Book>();
             var books = dbSetBook.AsNoTracking().Where(q => q.BookTypeId == bookType.Id);
+            
             dbSetBook.RemoveRange(books);
+            dbSetBookType.Remove(bookType);
             
-            var removeTypeResult =dbSetBookType.Remove(bookType);
+            var saveChangesResult = await SaveChangesAsync();
+            if(saveChangesResult is 0)
+                return BookTypeEnums.SaveChangesFault;
             
-            return await SaveChangesAsync() is 1;
+            return BookTypeEnums.DeletionSuccessful;
         }
         
-        public async Task<bool> CreateBookType(BookTypeModelDto model)
+        public async Task<BookTypeEnums> CreateBookType(BookTypeModelDto model)
         {
-            var bookType = new BookType();
-            bookType.Type = model.Type;
+            var typeSet = Set<BookType>();
+
+            var type = await typeSet.AsNoTracking().Where(q => q.Type.Equals(model.Type)).FirstOrDefaultAsync();
+            if (type is not null)
+                return BookTypeEnums.BookTypeAlreadyExists;
+            
+            var bookType = new BookType
+            {
+                Type = model.Type
+            };
             await Set<BookType>().AddAsync(bookType);
-            return await SaveChangesAsync() is 1;
+            
+            var saveChangesResult = await SaveChangesAsync();
+            if(saveChangesResult is 0)
+                return BookTypeEnums.SaveChangesFault;
+
+            return BookTypeEnums.CreationSuccessful;
         }
         public async Task<SearchByBookTypeResultDto> GetBookTypeWithBooks(string type,int currentPage)
         {
@@ -59,8 +77,8 @@ namespace SimpleLibrary.Persistence.Repository
                 return null;
             
             var bookList =await  mapper.ProjectTo<BookInfoDto>(Set<Book>().AsNoTracking().Where(q => q.BookTypeId == bookType.Id)
-                .OrderByDescending(q => q.Id).Skip((currentPage - 1) * 100).Take(100)).ToListAsync();
-            result = new SearchByBookTypeResultDto() {totalCount = bookList.Count, bookInfoList = bookList};
+                .OrderBy(q => q.Name).Skip((currentPage - 1) * 20).Take(20)).ToListAsync();
+            result = new SearchByBookTypeResultDto() {Type = type,CurrentPage = currentPage,TotalCount = bookList.Count, BookInfoList = bookList};
             
             _cache.Set(cacheKey, result, _cacheExpirationOptions);
             return result;

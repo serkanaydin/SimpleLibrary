@@ -1,8 +1,12 @@
-﻿namespace SimpleLibrary.Core.Dtos.Authentication
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SimpleLibrary.Core.Dtos.Authentication
 {
     public record LoginDto
     {
-        public string Username { get; set; }  
+        [Required]
+        public string Username { get; set; } 
+        [Required]
         public string Password { get; set; }
 
     }
