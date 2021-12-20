@@ -16,8 +16,7 @@ using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.Repository
 {
-    public class AccountRepository : BaseRepository
-    {
+    public class AccountRepository : BaseRepository,IRepository {
         
         private UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;

@@ -7,14 +7,7 @@ namespace SimpleLibrary.Persistence
 {
     public static class RepositoryInjector
     {
-        public static IServiceCollection AddRepository(this IServiceCollection services)
-        {
-            services.AddTransient<BookRepository>();
-            services.AddTransient<BookTypeRepository>();
-            services.AddTransient<AccountRepository>();
-
-            return services;
-        }
+    
         public static IServiceCollection AddContext(this IServiceCollection services)
         {
             services.AddDbContext<MainDbContext>();

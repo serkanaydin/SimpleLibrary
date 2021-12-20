@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 using System.Text;
 using AutoMapper;
 using System.Text.Json.Serialization;
@@ -30,6 +31,8 @@ namespace SimpleLibrary.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.RegisterServiceLayerDi();
+
             services.AddMiddlewares ();
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -62,12 +65,8 @@ namespace SimpleLibrary.WebAPI
             });
             services.AddMemoryCache();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddContext();
-            services.AddRepository();
-            services.AddApplicationServices();
-            
-            
-            
             services.AddIdentity<User,Role>()
                 .AddEntityFrameworkStores<MainDbContext>()
                 .AddDefaultTokenProviders();

@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using SimpleLibrary.Abstractions;
 using SimpleLibrary.Core.Dtos.Authentication;
 using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Domain;
@@ -8,7 +9,7 @@ using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
 {
-    public class AccountService  
+    public class AccountService : IApplicationService
     {
         private AccountRepository _accountRepository;
         public AccountService(AccountRepository accountRepository)

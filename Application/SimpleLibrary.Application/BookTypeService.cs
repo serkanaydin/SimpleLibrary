@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
+using SimpleLibrary.Abstractions;
 using SimpleLibrary.Core.Dtos;
 using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
 {
-    public class BookTypeService
+    public class BookTypeService : IApplicationService
     {
         private readonly BookTypeRepository _bookTypeRepository;
         public BookTypeService(BookTypeRepository bookTypeRepository)

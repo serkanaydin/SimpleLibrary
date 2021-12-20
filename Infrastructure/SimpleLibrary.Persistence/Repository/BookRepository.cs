@@ -12,7 +12,7 @@ using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.Repository
 {
-    public class BookRepository : BaseRepository
+    public class BookRepository : BaseRepository,IRepository 
     {
         private readonly DbContext _context;
         private readonly IMapper _mapper;

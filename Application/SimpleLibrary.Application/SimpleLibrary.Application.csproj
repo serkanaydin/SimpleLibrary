@@ -7,6 +7,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\SimpleLibrary.Domain\SimpleLibrary.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\SimpleLibrary.Persistence\SimpleLibrary.Persistence.csproj" />
+    <ProjectReference Include="..\SimpleLibrary.Abstractions\SimpleLibrary.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
   </ItemGroup>
 
 </Project>

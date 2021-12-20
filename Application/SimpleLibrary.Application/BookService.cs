@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SimpleLibrary.Abstractions;
 using SimpleLibrary.Core.Dtos;
 using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Domain;
@@ -9,7 +10,7 @@ using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
 {
-    public class BookService
+    public class BookService : IApplicationService
     {
         private BookRepository _bookRepository;
         public BookService(BookRepository bookRepository)

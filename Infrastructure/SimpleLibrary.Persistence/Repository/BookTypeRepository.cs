@@ -10,7 +10,7 @@ using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.Repository
 {
-    public class BookTypeRepository : BaseRepository
+    public class BookTypeRepository : BaseRepository,IRepository 
     {
         private readonly IMemoryCache _cache;
         private readonly MemoryCacheEntryOptions _cacheExpirationOptions;
