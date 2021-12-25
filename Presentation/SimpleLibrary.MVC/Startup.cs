@@ -6,10 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using SimpleLibrary.MVC.HttpClient;
+using SimpleLibrary.MVC.Jwt;
 
 namespace SimpleLibrary.MVC
 {
@@ -26,6 +30,22 @@ namespace SimpleLibrary.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpClient, HttpClientAccessor>();
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.Configure<JwtTokenValidationSettingModel>(this.Configuration.GetSection(nameof(JwtTokenValidationSettingModel)));
+            services.AddSingleton<IJwtValidationSettings, JwtValidationSettingsFactory>();
+
+            services.Configure<AuthenticationSettingModel>(this.Configuration.GetSection(nameof(AuthenticationSettingModel)));
+            services.AddSingleton<IAuthenticationSettings, AuthenticationSettingsFactory>();
+            var serviceProvider = services.BuildServiceProvider();
+            var authenticationSettings = serviceProvider.GetService<IAuthenticationSettings>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddCookie(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.LoginPath = authenticationSettings.LoginPath;
+                    options.AccessDeniedPath = authenticationSettings.AccessDeniedPath;
+                    options.Cookie.SameSite = SameSiteMode.Strict;
+                });
+            
             services.AddControllersWithViews();
             var handler = new HttpClientHandler();
 
@@ -54,6 +74,7 @@ namespace SimpleLibrary.MVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

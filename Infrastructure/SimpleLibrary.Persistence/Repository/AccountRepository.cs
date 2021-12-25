@@ -1,14 +1,9 @@
 ﻿#nullable enable
 using System;
-using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using SimpleLibrary.Core.Dtos.Authentication;
 using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Core.Helper.Authentication;
@@ -29,11 +24,11 @@ namespace SimpleLibrary.Persistence.Repository
             _signInManager = signInManager;
         }
         
-        public async Task<bool?> RegisterUser(RegisterDto model)
+        public async Task<UserEnums> RegisterUser(RegisterDto model)
             {
                 var userExists = await _userManager.FindByNameAsync(model.Username);
                 if (userExists != null)
-                    return null;
+                    return UserEnums.UsernameAlreadyExist;
                 
                 User user = new User()  
                 {  
@@ -46,9 +41,9 @@ namespace SimpleLibrary.Persistence.Repository
                 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (!result.Succeeded)
-                    return null;
+                    return UserEnums.RegistrationUnsuccessful;
 
-                return true;
+                return UserEnums.RegistrationSuccessful;
             }
 
         public async Task<UserEnums> DeactivateUser(int userId)

@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
 using SimpleLibrary.Application;
 using SimpleLibrary.Core.Dtos.Authentication;
+using SimpleLibrary.Core.Enum;
 
 namespace SimpleLibrary.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private readonly AccountService _accountService;
         
-        public AccountController(AccountService accountService)
+        public AccountController(AccountService accountService,IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor:httpContextAccessor)
         {
             _accountService = accountService;
         }
@@ -27,9 +28,7 @@ namespace SimpleLibrary.WebAPI.Controllers
         public async Task<IActionResult> Register([FromBody,Required] RegisterDto model)
         {
             var result = await _accountService.RegisterUser(model);
-            if (result is null)
-                return this.Ok(new {message = "User could not be registered"});
-            return this.Ok(new{Message="Registration successful"});
+            return this.Ok(result);
         }
         
         [HttpPost]  
@@ -44,8 +43,12 @@ namespace SimpleLibrary.WebAPI.Controllers
         [Route("deactivate-user")]  
         public async Task<IActionResult> DeactivateUser([FromQuery,Required] int userId)
         {
+            if (GetUserIdTokenDecode() != userId) 
+                return this.Unauthorized(UserEnums.UnauthorizedDeactivation);
+
+
             var result = await _accountService.DeactivateUser(userId);
-            return this.Ok(result.GetDisplayName());
+            return this.Ok(result);
         }
     }
 }

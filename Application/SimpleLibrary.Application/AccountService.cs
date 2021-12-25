@@ -1,10 +1,7 @@
 ﻿#nullable enable
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using SimpleLibrary.Abstractions;
 using SimpleLibrary.Core.Dtos.Authentication;
 using SimpleLibrary.Core.Enum;
-using SimpleLibrary.Domain;
 using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
@@ -17,7 +14,7 @@ namespace SimpleLibrary.Application
             _accountRepository = accountRepository;
         }
 
-        public async Task<bool?> RegisterUser(RegisterDto model)
+        public async Task<UserEnums> RegisterUser(RegisterDto model)
         {
            return await _accountRepository.RegisterUser(model);
         }

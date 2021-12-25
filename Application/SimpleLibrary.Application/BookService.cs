@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SimpleLibrary.Abstractions;
 using SimpleLibrary.Core.Dtos;
 using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Domain;

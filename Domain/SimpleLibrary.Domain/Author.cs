@@ -2,7 +2,7 @@
 
 namespace SimpleLibrary.Domain
 {
-    public class Author
+    public record Author :IDentifiable<int>
     {
         public int Id { get; set; }
         public string Name { get; set; }

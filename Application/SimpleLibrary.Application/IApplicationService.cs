@@ -1,4 +1,4 @@
-namespace SimpleLibrary.Abstractions;
+namespace SimpleLibrary.Application;
 
 public interface IApplicationService
 {

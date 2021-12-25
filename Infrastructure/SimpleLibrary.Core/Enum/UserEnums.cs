@@ -10,6 +10,12 @@ public enum UserEnums
     WrongPassword,
     LockedOut,
     NotAllowed,
-    SuccessfulLogin
+    SuccessfulLogin,
     
+    UsernameAlreadyExist,
+    RegistrationUnsuccessful,
+    RegistrationSuccessful,
+    
+    UnauthorizedDeactivation
+
 }
