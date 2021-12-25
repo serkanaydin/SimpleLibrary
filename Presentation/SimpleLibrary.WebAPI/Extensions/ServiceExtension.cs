@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleLibrary.Application;
+using SimpleLibrary.Core.Helper.ResponseHelper;
 using SimpleLibrary.Persistence.Repository;
 using SimpleLibrary.WebAPI.Middleware;
 
@@ -13,6 +14,7 @@ public static class ServiceExtension
     public static void AddMiddlewares(this IServiceCollection services)
     {
         services.AddScoped<RequiredAttributeMiddleware>();
+        services.AddTransient<IResponseHelper, ResponseHelper>();
     }
     public static void RegisterServiceLayerDi
         (this IServiceCollection services)

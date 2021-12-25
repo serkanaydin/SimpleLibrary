@@ -25,7 +25,7 @@ namespace SimpleLibrary.Core.Helper.Authentication
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return new LoginResponseDto()
-                { result = UserEnums.SuccessfulLogin,ExpiresAt = tokenDescriptor.Expires, JwtToken = tokenHandler.WriteToken(token) };
+                { Result = LoginResult.SuccessfulLogin,ExpiresAt = tokenDescriptor.Expires, JwtToken = tokenHandler.WriteToken(token) };
         }
     }
 }

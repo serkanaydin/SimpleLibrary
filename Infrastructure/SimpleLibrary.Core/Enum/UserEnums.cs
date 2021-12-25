@@ -1,21 +1,25 @@
 namespace SimpleLibrary.Core.Enum;
 
-public enum UserEnums
+public enum DeactivateResult
 {
+    DeactivateSuccessful,
     ActiveUserDoesntExistWithUserId,
     SaveChangesFault,
-    DeactivateSuccessful,
-    
+    UnauthorizedDeactivation
+}
+
+public enum LoginResult
+{
+    SuccessfulLogin,
     NoUserWithTheUsername,
     WrongPassword,
     LockedOut,
-    NotAllowed,
-    SuccessfulLogin,
-    
-    UsernameAlreadyExist,
-    RegistrationUnsuccessful,
-    RegistrationSuccessful,
-    
-    UnauthorizedDeactivation
+    NotAllowed
+}
 
+public enum RegistrationResult
+{   
+    RegistrationSuccessful,
+    UsernameAlreadyExist,
+    RegistrationUnsuccessful
 }

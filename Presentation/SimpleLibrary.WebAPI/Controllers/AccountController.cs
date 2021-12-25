@@ -44,7 +44,7 @@ namespace SimpleLibrary.WebAPI.Controllers
         public async Task<IActionResult> DeactivateUser([FromQuery,Required] int userId)
         {
             if (GetUserIdTokenDecode() != userId) 
-                return this.Unauthorized(UserEnums.UnauthorizedDeactivation);
+                return this.Unauthorized(DeactivateResult.UnauthorizedDeactivation);
 
 
             var result = await _accountService.DeactivateUser(userId);

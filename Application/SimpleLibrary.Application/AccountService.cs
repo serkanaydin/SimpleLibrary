@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SimpleLibrary.Core.Dtos.Authentication;
 using SimpleLibrary.Core.Enum;
+using SimpleLibrary.Core.Helper.ResponseHelper;
 using SimpleLibrary.Persistence.Repository;
 
 namespace SimpleLibrary.Application
@@ -14,7 +15,7 @@ namespace SimpleLibrary.Application
             _accountRepository = accountRepository;
         }
 
-        public async Task<UserEnums> RegisterUser(RegisterDto model)
+        public async Task<ServiceResponse> RegisterUser(RegisterDto model)
         {
            return await _accountRepository.RegisterUser(model);
         }
@@ -23,7 +24,7 @@ namespace SimpleLibrary.Application
         {
             return await _accountRepository.Login(login);
         }
-        public async Task<UserEnums> DeactivateUser(int userId)
+        public async Task<DeactivateResult> DeactivateUser(int userId)
         {
             return await _accountRepository.DeactivateUser(userId);
         }

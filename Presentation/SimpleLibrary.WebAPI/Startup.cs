@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SimpleLibrary.Domain;
 using SimpleLibrary.Persistence;
+using SimpleLibrary.WebAPI.Extensions;
 
 namespace SimpleLibrary.WebAPI
 {
@@ -35,61 +36,11 @@ namespace SimpleLibrary.WebAPI
 
             services.AddMiddlewares ();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SimpleLibrary.WebAPI", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      \r\n\r\nExample: 'Bearer 12345abcdef'",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                        },
-                        new List<string>()
-                    }
-                });
-            });
             services.AddMemoryCache();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             services.AddContext();
-            services.AddIdentity<User,Role>()
-                .AddEntityFrameworkStores<MainDbContext>()
-                .AddDefaultTokenProviders();
-            services.AddScoped<RoleManager<Role>>();
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>  
-            {  
-                options.SaveToken = true;  
-                options.RequireHttpsMetadata = false;  
-                options.TokenValidationParameters = new TokenValidationParameters()  
-                {  
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
-                };  
-            }); 
+            services.AddSwagger();
+            services.AddIdentityConfigurations(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

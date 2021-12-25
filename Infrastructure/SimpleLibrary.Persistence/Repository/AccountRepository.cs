@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using SimpleLibrary.Core.Dtos.Authentication;
 using SimpleLibrary.Core.Enum;
 using SimpleLibrary.Core.Helper.Authentication;
+using SimpleLibrary.Core.Helper.ResponseHelper;
 using SimpleLibrary.Domain;
 
 namespace SimpleLibrary.Persistence.Repository
@@ -16,19 +17,22 @@ namespace SimpleLibrary.Persistence.Repository
         private UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
-        
-        public AccountRepository(SignInManager<User> signInManager,UserManager<User> userManager, DbContext context,IConfiguration configuration) : base(context)
+        private readonly IResponseHelper _responseHelper;
+
+        public AccountRepository(SignInManager<User> signInManager,UserManager<User> userManager,
+            DbContext context,IConfiguration configuration,IResponseHelper responseHelper) : base(context)
         {
+            _responseHelper = responseHelper;
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
         }
         
-        public async Task<UserEnums> RegisterUser(RegisterDto model)
+        public async Task<ServiceResponse> RegisterUser(RegisterDto model)
             {
                 var userExists = await _userManager.FindByNameAsync(model.Username);
                 if (userExists != null)
-                    return UserEnums.UsernameAlreadyExist;
+                    return _responseHelper.SetError("Username already exists",isLogging:true);
                 
                 User user = new User()  
                 {  
@@ -41,17 +45,17 @@ namespace SimpleLibrary.Persistence.Repository
                 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (!result.Succeeded)
-                    return UserEnums.RegistrationUnsuccessful;
+                    return _responseHelper.SetError("Unsuccessful registration");
 
-                return UserEnums.RegistrationSuccessful;
+                return _responseHelper.SetSuccess();
             }
 
-        public async Task<UserEnums> DeactivateUser(int userId)
+        public async Task<DeactivateResult> DeactivateUser(int userId)
         {
             var userSet = Set<User>();
             var user = await  userSet.FirstOrDefaultAsync(q => q.Id == userId && q.IsActive);
             if (user is null)
-                return UserEnums.ActiveUserDoesntExistWithUserId;
+                return DeactivateResult.ActiveUserDoesntExistWithUserId;
 
             user.IsActive = false;
             user.IsDeleted = true;
@@ -60,16 +64,16 @@ namespace SimpleLibrary.Persistence.Repository
             userSet.Update(user);
             var result = await SaveChangesAsync();
             if (result is 0)
-                return UserEnums.SaveChangesFault;
+                return DeactivateResult.SaveChangesFault;
 
-            return UserEnums.DeactivateSuccessful;
+            return DeactivateResult.DeactivateSuccessful;
         }
         
         public async Task<LoginResponseDto> Login(LoginDto login)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(q => q.UserName == login.Username);
             if (user is null)
-                return new LoginResponseDto(){result = UserEnums.NoUserWithTheUsername};
+                return new LoginResponseDto(){Result = LoginResult.NoUserWithTheUsername};
             
             var result =await _signInManager.CheckPasswordSignInAsync(user, login.Password, true);
             
@@ -78,11 +82,11 @@ namespace SimpleLibrary.Persistence.Repository
                 case true:
                     return JwtHelper.generateJwtToken(user,_configuration);; ;
                 case false when result.IsLockedOut:
-                    return new LoginResponseDto() { result = UserEnums.LockedOut };
+                    return new LoginResponseDto() { Result = LoginResult.LockedOut };
                 case false when result.IsNotAllowed:
-                    return new LoginResponseDto() { result = UserEnums.NotAllowed };
+                    return new LoginResponseDto() { Result = LoginResult.NotAllowed };
                 default:
-                    return new LoginResponseDto() { result = UserEnums.WrongPassword };
+                    return new LoginResponseDto() { Result = LoginResult.WrongPassword };
             }
         } 
     }
